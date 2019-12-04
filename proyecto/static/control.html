@@ -1,0 +1,185 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--script src="funcion.js" ></script-->
+    <link rel="stylesheet" type="plain/text" href="estilos.css">
+</head>
+
+<body>
+    <script>
+
+        var url = "http://localhost:4000";
+        //var url = "http://192.168.43.76:4000";
+
+        function update() {
+            //console.log("ready");
+            $.get(
+                url + "/leerdatos", {
+                name: "GFG"
+            },
+                function (data) {
+                    console.log(data);
+                    $('#temperatura').html("Temperatura: " + data["sensores"]["temperatura"]);
+                    $('#humedad').html("Humedad: " + data["sensores"]["humedad"]);
+                    $('#luminosidad').html("Luminosidad: " + data["sensores"]["luminosidad"]);
+                    $('#movimiento').html("Movimiento: " + data["sensores"]["movimiento"]);
+                    $('#flama').html("Flama: " + data["sensores"]["flama"]);
+                    $("#ventilador").val(String(data["estados"]["ventilador"]));
+                    $("#luces").val(String(data["estados"]["luz"]));
+                    $("#alarma").val(String(data["estados"]["alarma"]));
+                    $("#aspersor").val(String(data["estados"]["aspersor"]));
+                    $("#puerta").val(String(data["estados"]["puerta"]));
+                    $("#sistemaLuces").val(String(data["sistemas"]["sistemaLuces"]));
+                    $("#sistemaIncendios").val(String(data["sistemas"]["sistemaEnfriamiento"]));
+                    $("#sistemaEnfriamiento").val(String(data["sistemas"]["sistemaIncendios"]));
+                    $("#sistemaAlarma").val(String(data["sistemas"]["sistemaAlarma"]));
+
+                });
+        }
+
+        function valueChange() {
+            dict = {}
+            dict["ventilador"] = $("#ventilador").val();
+            dict["luces"] = $("#luces").val();
+            dict["alarma"] = $("#alarma").val();
+            dict["aspersor"] = $("#aspersor").val();
+            dict["puerta"] = $("#puerta").val();
+            dict["sistemaLuces"] = $("#sistemaLuces").val();
+            dict["sistemaIncendios"] = $("#sistemaIncendios").val();
+            dict["sistemaEnfriamiento"] = $("#sistemaEnfriamiento").val();
+            dict["sistemaAlarma"] = $("#sistemaAlarma").val();
+            console.log(dict);
+            $.post(url + "/control/" + window.location.href.split("/")[window.location.href.split("/").length - 1]
+                , dict
+            ).done((data) => {
+                console.log("change made");
+            })
+        }
+
+        $(document).ready(function () {
+            setInterval(function () {
+                update();
+            }, 1000);
+        });
+
+    </script>
+
+    <a href="/">Log Out</a>
+    <div class="container">
+        <div class="col-md-3">
+            <div class="pl-3 panel panel-default">
+
+                <h3 class="text-center">Sensores</h3>
+                <div class="panel-body">
+                    <label class="col-form-label" id="temperatura">Temperatura: </label><br>
+                    <label class="col-form-label" id="humedad">Humedad: </label><br>
+                    <label class="col-form-label" id="luminosidad">Luminosidad: </label><br>
+                    <label class="col-form-label" id="movimiento">Movimiento: </label><br>
+                    <label class="col-form-label" id="flama">Flama: </label><br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <h3 class="text-center">Actuadores</h3>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Aspersor</label>
+                        <div class="col-md-6">
+                            <select id="aspersor" class="form-control form-control-sm" onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Puerta</label>
+                        <div class="col-md-6">
+                            <select id="puerta" class="form-control form-control-sm" onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">alarma</label>
+                        <div class="col-md-6">
+                            <select id="alarma" class="form-control form-control-sm" onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">luces</label>
+                        <div class="col-md-6">
+                            <select id="luces" class="form-control form-control-sm" onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Ventilador</label>
+                        <div class="col-md-6">
+                            <select id="ventilador" class="form-control form-control-sm" onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <h3 class="text-center">Sistemas</h3>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Sistema de Luces</label>
+                        <div class="col-md-6">
+                            <select id="sistemaLuces" class="form-control form-control-sm" onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Sistema de Enfriamiento</label>
+                        <div class="col-md-6">
+                            <select id="sistemaEnfriamiento" class="form-control form-control-sm"
+                                onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Sistema de Incendios</label>
+                        <div class="col-md-6">
+                            <select id="sistemaIncendios" class="form-control form-control-sm" onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Sistema de Alarma</label>
+                        <div class="col-md-6">
+                            <select id="sistemaAlarma" class="form-control form-control-sm" onchange="valueChange()">
+                                <option value="true">Prendido</option>
+                                <option value="false">Apagado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

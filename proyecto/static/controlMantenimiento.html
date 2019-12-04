@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <!--script src="funcion.js" ></script-->
+        
+    </head>
+    <body>
+        <script>
+
+        //var url = "http://localhost:4000";
+        var url = "http://192.168.43.76:4000";
+
+        function update(){
+            //console.log("ready");
+            $.get( 
+                url + "/leerdatos", { 
+                    name: "GFG" 
+                }, 
+                function(data) { 
+                    console.log(data);
+                    $('#temperatura').html("Temperatura: " + data["sensores"]["temperatura"]);
+                    $('#humedad').html("Humedad: " + data["sensores"]["humedad"]);
+                    $('#luminosidad').html("Luminosidad: " + data["sensores"]["luminosidad"]);
+                    $('#movimiento').html("Movimiento: " + data["sensores"]["movimiento"]);
+                    $('#flama').html("Flama: " + data["sensores"]["flama"]);  
+                    $("#ventilador").val(String(data["estados"]["ventilador"]));
+                    $("#luces").val(String(data["estados"]["luz"]));
+                    $("#alarma").val(String(data["estados"]["alarma"]));
+                    $("#aspersor").val(String(data["estados"]["aspersor"]));
+                    $("#puerta").val(String(data["estados"]["puerta"]));
+            
+            
+                }); 
+        }
+
+        function valueChange(){
+            dict = {}
+            dict["ventilador"] = $("#ventilador").val();
+            dict["luces"] = $("#luces").val();
+            dict["alarma"] = $("#alarma").val();
+            dict["aspersor"] = $("#aspersor").val();
+            dict["puerta"] = $("#puerta").val();
+            console.log(dict);
+            $.post(url + "/controlMant/" + window.location.href.split("/")[window.location.href.split("/").length - 1]
+                    ,dict
+            ).done((data)=>{
+                console.log("change made");
+            })
+        }
+
+        $(document).ready(function() { 
+            setInterval(function(){
+                update();
+            },1000);
+        }); 
+        
+        </script>
+        <a href="/">Log Out</a>
+        <label id="temperatura" >Temperatura: </label><br>
+        <label id="humedad">Humedad: </label><br>
+        <label>Ventilador</label><br>
+        <select id="ventilador" onchange="valueChange()">
+                <option value="true">Prendido</option>
+                <option value="false">Apagado</option>
+        </select><br>
+        <label id="luminosidad">Luminosidad: </label><br>
+        <label>Luces</label><br>
+        <select id="luces" onchange="valueChange()">
+                <option value="true">Prendido</option>
+                <option value="false">Apagado</option>
+        </select><br>
+        <label id="movimiento">Movimiento: </label><br>
+        <label>Alarma</label><br>
+        <select id="alarma" onchange="valueChange()">
+                <option value="true">Prendido</option>
+                <option value="false">Apagado</option>
+        </select><br>
+
+        <label id="flama">Flama: </label><br>
+        <label>Aspersor</label><br>
+        <select id="aspersor" onchange="valueChange()">
+                <option value="true">Prendido</option>
+                <option value="false">Apagado</option>
+        </select><br>
+        <label>Puerta</label><br>
+        <select id="puerta" onchange="valueChange()">
+                <option value="true">Prendido</option>
+                <option value="false">Apagado</option>
+        </select><br>
+
+    </body>
+</html>

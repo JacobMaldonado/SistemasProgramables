@@ -8,13 +8,16 @@ def conwhile(lis):
         print(str(i) + " " + str(lis[i]))
         i += 1
 
-while True:
-    try:
-        x = input("Dame un numero ")
-        y = int(x)
-        break
-    except:
-        print('otra vez')
+capint():
+    while True:
+        try:
+            x = input("Dame un numero ")
+            y = int(x)
+            break
+        except:
+            print('otra vez')
+    return y
 
 confor()
 conwhile(lista)
+f = capint()

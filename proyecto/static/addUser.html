@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <form method="post" action="/agregarUsuario">
+        <label>Usuario</label>
+        <input type="text" placeholder="Nombre Usuario" name="usuario">
+        <label>Contraseña</label>
+        <input type="text" placeholder="Contraseña" name="pass">
+        <label>Tipo</label>
+        <select id="tipo" onchange="valueChange()" name="tipo">
+            <option value="admin">Administrador</option>
+            <option value="mant">Mantenimiento</option>
+            <option value="user" selected>Usuario</option>
+        </select><br>
+        <input type="submit" value="Subir">
+    </form>
+    </body>
+</html>
