@@ -8,7 +8,7 @@ import threading
 import gpiozero
 import RPi.GPIO as gpio
 
-# Sensores
+# Se habilitan los pines para los ctuadores
 ledPin = gpiozero.PWMLED(18)
 servoPin = gpiozero.AngularServo(17, min_angle=-180, max_angle=180)
 bz = gpiozero.Buzzer(16)
@@ -16,10 +16,11 @@ gpio.setmode(gpio.BCM)
 gpio.setup(12, gpio.OUT)
 
 
-# Serial
+# Se habilita el puerto serial para leer los datos del arduino
 ser = Serial('/dev/ttyACM0',9600)
 s = [0]
 
+# Se establece la estructura de manejo de datos con datos ficticios
 params = {
         "id":1,        
         "temperatura": 28.01,
@@ -30,22 +31,24 @@ params = {
         "flama": False
     }
 
-# Variables de actuadores
+# Variables de actuadores uusadas para manipular diversos numeros de actuadores
 actuadorLuz = [ledPin]
 actuadorPuerta = [servoPin]
 actuadorVentilador = [1]
 actuadorAspersor = [1]
 actuadorAlarma = [bz]
 
-# Petición a el servidor
+# Petición a el servidor, enviando datos de sensores y recibimos los nuevos estados de los actuadores
 def peticion():
     url = "http://192.168.43.76:4000/datos"  
     #url = "http://192.168.1.145:4000/datos"
+    # Hacemos un Encode a la información a enviar en formato utf8
     data = json.dumps(params).encode('utf8')
+    # Se hace la petición
     request = urllib.request.Request(url,data=data,headers={'content-type': 'application/json'})
     with urllib.request.urlopen( request) as response:         
-        response_text = response.read()         
-        #print( response_text )
+        # Se lee la respuesta y se cambian valores de los actuadores en base a la respuesta
+        response_text = response.read()
         cambiarValores(json.loads(response_text))
 
 
@@ -57,86 +60,53 @@ def cambiarValores(valores):
     aspersor(valores["aspersor"])
     alarma(valores["alarma"])
 
+# Función que manipula actuadores de luz
 def luces(val):
     if val:
         # prendemos cada luz
         for luz in actuadorLuz:
-            # TODO: prender luces 
             luz.value = 1
-            pass
     else:
         # Apagamos cada luz
         for luz in actuadorLuz:
-            # TODO: Apagar luces
             luz.value = 0
-            pass
 
+# Función que manipula los servos
 def puerta(val):
     if val:
         # Abrir puerta
         for p in actuadorPuerta:
-            # TODO: Abrir puerta
             p.angle = -180
-            pass
     else:
         # Cerrar puerta
         for p in actuadorPuerta:
-            # TODO: Cerrar puerta
             p.angle = 180
-            pass
 
+# Función que manipula el ventilador
 def ventilador(val):
     if val:
         # Prender ventiladores
         for ven in actuadorVentilador:
             gpio.output(12, True)
-            # TODO: prender ventilador
-            pass
     else:
         # Apagar ventiladores
         for ven in actuadorVentilador:
             gpio.output(12, False)
-            # TODO: apagar ventilador
-            pass
 
+# Función para manipular los aspersores
 def aspersor(val):
     if val:
         # Prender aspersores
         for asp in actuadorAspersor:
             # TODO: prender aspersor
             bz.on()
-            pass
     else:
         # Apagar aspersores
         for asp in actuadorAspersor:
             # TODO: apagar aspersor
             bz.off()
-            pass
 
-def leerSerial():
-    # Leemos el serial
-    try:
-        while True:
-            s[0] = str(ser.readline())
-            if s[0]:
-                print(s[0])
-                if str(s[0]).find("cm") != -1:
-                    params["distancia"] = s[0][2:str(s[0]).find("cm") + 2]
-                elif str(s[0]).find("fotores") != -1:
-                    params["luminosidad"] = s[0][str(s[0]).find("fotores") + 9: str(s[0]).find("\\") ]
-                elif str(s[0]).find("flamita") != -1:
-                    params["flama"] = s[0][str(s[0]).find("flamita") + 9: str(s[0]).find("\\") ] == "1"
-                elif str(s[0]).find("Humedad") != -1:
-                    params["humedad"] = s[0][str(s[0]).find("Humedad") + 9: str(s[0]).find("%") - 1 ]
-                elif str(s[0]).find("Temperatura") != -1:
-                    params["temperatura"] = s[0][str(s[0]).find("Temperatura") + 13: str(s[0]).find("\\") ]
-                elif str(s[0]).find("mov: ") != -1:
-                    params["movimiento"] = int(s[0][str(s[0]).find("mov:") + 5: str(s[0]).find("\\") ]) == 1
-
-    except KeyboardInterrupt:
-        pass
-
-
+# Función para manipular la alarma
 def alarma(val):
     if val:
         # Prender alarmas
@@ -150,20 +120,49 @@ def alarma(val):
             # TODO: apagar alarmas
             alarm.off()
             pass
+
+# Función que corre en segundo plano que actualiza los datos de los sensores
+def leerSerial():
+    # Leemos el serial
+    try:
+        while True:
+            s[0] = str(ser.readline())
+            if s[0]:
+                print(s[0])
+                # Si es de distancia
+                if str(s[0]).find("cm") != -1:
+                    params["distancia"] = s[0][2:str(s[0]).find("cm") + 2]
+                # Si es de la Fotoresistencia
+                elif str(s[0]).find("fotores") != -1:
+                    params["luminosidad"] = s[0][str(s[0]).find("fotores") + 9: str(s[0]).find("\\") ]
+                # Si es de flama
+                elif str(s[0]).find("flamita") != -1:
+                    params["flama"] = s[0][str(s[0]).find("flamita") + 9: str(s[0]).find("\\") ] == "1"
+                # Si es de Humedad
+                elif str(s[0]).find("Humedad") != -1:
+                    params["humedad"] = s[0][str(s[0]).find("Humedad") + 9: str(s[0]).find("%") - 1 ]
+                # Si es de Temperatura
+                elif str(s[0]).find("Temperatura") != -1:
+                    params["temperatura"] = s[0][str(s[0]).find("Temperatura") + 13: str(s[0]).find("\\") ]
+                # Si es de movimiento
+                elif str(s[0]).find("mov: ") != -1:
+                    params["movimiento"] = int(s[0][str(s[0]).find("mov:") + 5: str(s[0]).find("\\") ]) == 1
+    except KeyboardInterrupt:
+        gpio.cleanup()
+        exit()
+
     
 # METODO PINCIPAL 
 def main():
+    # Corre la Función "leerSerial" en segundo plano
     threading.Thread(target=leerSerial, daemon=True).start()
     try:
-        while True:    
-            #print(read_serial)
-            # Leemos la distancia
-            # params["distancia"] = s[0]
+        while True:
+            # Hacemos la petición cada medio segundo
             peticion()
             time.sleep(0.5)
-            #print(params)
     except KeyboardInterrupt:
         gpio.cleanup()
         
-
+# LLamamos al main
 main()
