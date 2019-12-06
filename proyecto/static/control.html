@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!--script src="funcion.js" ></script-->
+    <script src="funcion.js" ></script>
     <link rel="stylesheet" type="plain/text" href="estilos.css">
 </head>
 
@@ -68,118 +68,118 @@
     </script>
 
     <a href="/">Log Out</a>
-    <!--div "container">
-        <div "col-md-3">
-            <div "pl-3 panel panel-default"-->
+    <div class="container">
+        <div class="col-md-3">
+            <div class="pl-3 panel panel-default">
 
-                <h3 "text-center">Sensores</h3>
-                <!--div "panel-body"-->
-                    <label "col-form-label" id="temperatura">Temperatura: </label><br>
-                    <label "col-form-label" id="humedad">Humedad: </label><br>
-                    <label "col-form-label" id="luminosidad">Luminosidad: </label><br>
-                    <label "col-form-label" id="movimiento">Movimiento: </label><br>
-                    <label "col-form-label" id="flama">Flama: </label><br>
-                <!--/div>
+                <h3 class="text-center">Sensores</h3>
+                <div class="panel-body">
+                    <label class="col-form-label" id="temperatura">Temperatura: </label><br>
+                    <label class="col-form-label" id="humedad">Humedad: </label><br>
+                    <label class="col-form-label" id="luminosidad">Luminosidad: </label><br>
+                    <label class="col-form-label" id="movimiento">Movimiento: </label><br>
+                    <label class="col-form-label" id="flama">Flama: </label><br>
+                </div>
             </div>
         </div>
-        <div "col-md-4">
-            <div "panel panel-default"-->
-                <h3 "text-center">Actuadores</h3>
-                <!--div "panel-body">
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">Aspersor</label>
-                        <!--div "col-md-6"-->
-                            <select id="aspersor" "form-control form-control-sm" onchange="valueChange()">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <h3 class="text-center">Actuadores</h3>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Aspersor</label>
+                        <div class="col-md-6">
+                            <select id="aspersor" class="form-control form-control-sm" onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">Puerta</label>
-                        <!--div "col-md-6"-->
-                            <select id="puerta" "form-control form-control-sm" onchange="valueChange()">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Puerta</label>
+                        <div class="col-md-6">
+                            <select id="puerta" class="form-control form-control-sm" onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">alarma</label>
-                        <!--div "col-md-6"-->
-                            <select id="alarma" "form-control form-control-sm" onchange="valueChange()">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">alarma</label>
+                        <div class="col-md-6">
+                            <select id="alarma" class="form-control form-control-sm" onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">luces</label>
-                        <!--div "col-md-6"-->
-                            <select id="luces" "form-control form-control-sm" onchange="valueChange()">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">luces</label>
+                        <div class="col-md-6">
+                            <select id="luces" class="form-control form-control-sm" onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">Ventilador</label>
-                        <!--div "col-md-6"-->
-                            <select id="ventilador" "form-control form-control-sm" onchange="valueChange()">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Ventilador</label>
+                        <div class="col-md-6">
+                            <select id="ventilador" class="form-control form-control-sm" onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div "col-md-5">
-            <div "panel panel-default"-->
-                <h3 "text-center">Sistemas</h3>
-                <!--div "panel-body">
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">Sistema de Luces</label>
-                        <!--div "col-md-6"-->
-                            <select id="sistemaLuces" "form-control form-control-sm" onchange="valueChange()">
+        <div class="col-md-5">
+            <div class="panel panel-default">
+                <h3 class="text-center">Sistemas</h3>
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Sistema de Luces</label>
+                        <div class="col-md-6">
+                            <select id="sistemaLuces" class="form-control form-control-sm" onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">Sistema de Enfriamiento</label>
-                        <!--div "col-md-6"-->
-                            <select id="sistemaEnfriamiento" "form-control form-control-sm"
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Sistema de Enfriamiento</label>
+                        <div class="col-md-6">
+                            <select id="sistemaEnfriamiento" class="form-control form-control-sm"
                                 onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">Sistema de Incendios</label>
-                        <!--div "col-md-6"-->
-                            <select id="sistemaIncendios" "form-control form-control-sm" onchange="valueChange()">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Sistema de Incendios</label>
+                        <div class="col-md-6">
+                            <select id="sistemaIncendios" class="form-control form-control-sm" onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
-                    <div "form-group row"-->
-                        <label "col-md-6 col-form-label">Sistema de Alarma</label>
-                        <!--div "col-md-6"-->
-                            <select id="sistemaAlarma" "form-control form-control-sm" onchange="valueChange()">
+                    <div class="form-group row">
+                        <label class="col-md-6 col-form-label">Sistema de Alarma</label>
+                        <div class="col-md-6">
+                            <select id="sistemaAlarma" class="form-control form-control-sm" onchange="valueChange()">
                                 <option value="true">Prendido</option>
                                 <option value="false">Apagado</option>
                             </select>
-                        <!--/div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div-->
+    </div>
 </body>
 
 </html>

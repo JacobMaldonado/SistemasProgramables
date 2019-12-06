@@ -32,10 +32,19 @@ params = {
     }
 
 # Variables de actuadores uusadas para manipular diversos numeros de actuadores
-actuadorLuz = [ledPin]
+# Iniciacion pines luz
+actuadorLuz = []
+actuadorLuz.append(gpiozero.PWMLED(18))
+actuadorLuz.append(gpiozero.PWMLED(27))
+actuadorLuz.append(gpiozero.PWMLED(22))
+actuadorLuz.append(gpiozero.PWMLED(23))
+actuadorLuz.append(gpiozero.PWMLED(24))
+actuadorLuz.append(gpiozero.PWMLED(25))
+# iniciacion de seros para Puerta
 actuadorPuerta = [servoPin]
 actuadorVentilador = [1]
-actuadorAspersor = [1]
+# pin aspersor
+actuadorAspersor = [gpiozero.TonalBuzzer(6)]
 actuadorAlarma = [bz]
 
 # Petición a el servidor, enviando datos de sensores y recibimos los nuevos estados de los actuadores
@@ -99,12 +108,12 @@ def aspersor(val):
         # Prender aspersores
         for asp in actuadorAspersor:
             # TODO: prender aspersor
-            bz.on()
+            asp.play(420.0)
     else:
         # Apagar aspersores
         for asp in actuadorAspersor:
             # TODO: apagar aspersor
-            bz.off()
+            asp.stop()
 
 # Función para manipular la alarma
 def alarma(val):

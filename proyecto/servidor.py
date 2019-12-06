@@ -54,7 +54,7 @@ def recibirDatos():
     datos = request.get_json()
     print(datos)
     if datos["id"] == 1:
-        registrarEnDB(datos)
+        #registrarEnDB(datos)
         logicaSistemas(datos)
         return jsonify(estados)
 
@@ -94,12 +94,12 @@ def control(name):
         estados["luz"] = request.form["luces"]== "true"
         estados["alarma"] = request.form["alarma"]== "true"
         estados["aspersor"] = request.form["aspersor"]== "true"
-        cambiosEnActuador(ultimoEstado, name)
+        #cambiosEnActuador(ultimoEstado, name)
         sistemas["sistemaLuces"] = request.form["sistemaLuces"]== "true"
         sistemas["sistemaEnfriamiento"] = request.form["sistemaEnfriamiento"]== "true"
         sistemas["sistemaIncendios"] = request.form["sistemaIncendios"]== "true"
         sistemas["sistemaAlarma"] = request.form["sistemaAlarma"]== "true"
-        cambiosEnSistemas(ultimoSistemas, name)
+        #cambiosEnSistemas(ultimoSistemas, name)
         return "success"
 
 # Ruta de visualización y control de Mantenimiento
@@ -139,7 +139,7 @@ def agregarUsuario():
 @app.route("/leerdatos", methods=["GET"])
 def leer():
     dic = {}
-    dic["sensores"] = db.child("ultimo").get().val()
+    #dic["sensores"] = db.child("ultimo").get().val()
     dic["estados"] = estados
     dic["sistemas"] = sistemas
     return jsonify(dic)
@@ -202,7 +202,7 @@ def sistemaAlarma(movimiento):
 # Función que controla el sistema de Luces
 def sistemaLuces(luz, movimiento):
     if sistemas["sistemaLuces"]:
-        if int(luz) < 100 and movimiento:
+        if int(luz) < 20 and movimiento:
             # Prendemos el sistema de luces
             estados["luces"] = True
         else:
@@ -230,9 +230,6 @@ def registrarLogin(usuario, datos):
     val["usuario"] = usuario
     val["tipoUsuario"] = datos["tipo"]
     db.child("logins").push(val)
-
-
-
 
 # Corremos el servicio web en el puerto 4000 con la ip segun la red
 #app.run(host="192.168.43.76", port=4000, debug=True)
